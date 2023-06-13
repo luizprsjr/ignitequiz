@@ -10,6 +10,8 @@ import Animated, {
 import { THEME } from '../../styles/theme'
 import { styles } from './styles'
 
+const PressableAnimated = Animated.createAnimatedComponent(Pressable)
+
 const TYPE_COLORS = {
   EASY: THEME.COLORS.BRAND_LIGHT,
   HARD: THEME.COLORS.DANGER_LIGHT,
@@ -23,10 +25,10 @@ type Props = PressableProps & {
 }
 
 export function Level ({ title, type = 'EASY', isChecked = false, ...rest }: Props) {
-  const COLOR = TYPE_COLORS[type]
-
   const scale = useSharedValue(1)
   const checked = useSharedValue(1)
+
+  const COLOR = TYPE_COLORS[type]
 
   const animatedContainerStyle = useAnimatedStyle(() => {
     return {
@@ -62,22 +64,14 @@ export function Level ({ title, type = 'EASY', isChecked = false, ...rest }: Pro
   }, [isChecked])
 
   return (
-    <Pressable onPressIn={onPressIn} onPressOut={onPressOut} {...rest}>
-      <Animated.View style={
-        [
-          styles.container,
-          animatedContainerStyle,
-          { borderColor: COLOR }
-        ]
-      }>
-        <Animated.Text style={
-          [
-            styles.title,
-            animatedTextStyle
-          ]}>
+    <PressableAnimated
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
+      style={[styles.container, { borderColor: COLOR }, animatedContainerStyle]}
+      {...rest}>
+        <Animated.Text style={[styles.title, animatedTextStyle]}>
           {title}
         </Animated.Text>
-      </Animated.View>
-    </Pressable>
+    </PressableAnimated>
   )
 }
