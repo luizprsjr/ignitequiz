@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react'
-import { useNavigation } from '@react-navigation/native'
-import { View, ScrollView, TouchableOpacity, Alert } from 'react-native'
 import { HouseLine } from 'phosphor-react-native'
+import { useEffect, useState } from 'react'
+import { Alert, ScrollView, TouchableOpacity, View } from 'react-native'
+import Animated, { Layout } from 'react-native-reanimated'
+
+import { useNavigation } from '@react-navigation/native'
 
 import { Header } from '../../components/Header'
-import { HistoryCard, type HistoryProps } from '../../components/HistoryCard'
-
-import { styles } from './styles'
-import { historyGetAll, historyRemove } from '../../storage/quizHistoryStorage'
+import { HistoryCard, HistoryProps } from '../../components/HistoryCard'
 import { Loading } from '../../components/Loading'
+import { historyGetAll, historyRemove } from '../../storage/quizHistoryStorage'
+import { styles } from './styles'
 
 export function History () {
   const [isLoading, setIsLoading] = useState(true)
@@ -29,16 +30,15 @@ export function History () {
   }
 
   function handleRemove (id: string) {
-    Alert.alert(
-      'Remover',
-      'Deseja remover esse registro?',
-      [
-        {
-          text: 'Sim', onPress: async () => { await remove(id) }
-        },
-        { text: 'Não', style: 'cancel' }
-      ]
-    )
+    Alert.alert('Remover', 'Deseja remover esse registro?', [
+      {
+        text: 'Sim',
+        onPress: async () => {
+          await remove(id)
+        }
+      },
+      { text: 'Não', style: 'cancel' }
+    ])
   }
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export function History () {
   return (
     <View style={styles.container}>
       <Header
-        title="Histórico"
+        title='Histórico'
         subtitle={`Seu histórico de estudos${'\n'}realizados`}
         icon={HouseLine}
         onPress={goBack}
@@ -62,16 +62,17 @@ export function History () {
         contentContainerStyle={styles.history}
         showsVerticalScrollIndicator={false}
       >
-        {
-          history.map((item) => (
+        {history.map((item) => (
+          <Animated.View key={item.id} layout={Layout.springify()}>
             <TouchableOpacity
-              key={item.id}
-              onPress={() => { handleRemove(item.id) }}
+              onPress={() => {
+                handleRemove(item.id)
+              }}
             >
               <HistoryCard data={item} />
             </TouchableOpacity>
-          ))
-        }
+          </Animated.View>
+        ))}
       </ScrollView>
     </View>
   )
