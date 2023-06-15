@@ -25,6 +25,7 @@
         "@typescript-eslint/consistent-type-assertions": "off",
         "@typescript-eslint/no-misused-promises": "off",
         "no-useless-catch": "off",
-        "@typescript-eslint/consistent-type-imports": "off"
+        "@typescript-eslint/consistent-type-imports": "off",
+        "@typescript-eslint/comma-dangle": "off"
     }
 }
