@@ -8,7 +8,8 @@ export const styles = StyleSheet.create({
     backgroundColor: THEME.COLORS.GREY_800
   },
   history: {
-    padding: 32
+    flexGrow: 1,
+    padding: 32,
   },
   swipeableContainer: {
     width: '100%',
